@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GeoQuizApp</string>
+    <string name="True">True</string>
+    <string name="False">False</string>
+    <string name="Question_dog">Dog have three legs.</string>
+    <string name="Question_cow">Cows are domesticated.</string>
+    <string name="Question_duck">Ducks are not domesticated.</string>
+    <string name="Question_phone">The phone is made of stone.</string>
+    <string name="correct_toast">That\'s correct!</string>
+    <string name="incorrect_toast">That\'s incorrect!</string>
+</resources>
