@@ -1,52 +1,60 @@
 package com.example.geoquizapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
 import com.example.geoquizapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private  lateinit var binding: ActivityMainBinding
-    var currentIndex = 0
-    val question_bank = listOf<Question>(
-        Question(R.string.Question_dog , false),
-        Question(R.string.Question_cow , true),
-        Question(R.string.Question_duck , false),
-        Question(R.string.Question_phone , false)
-    )
+    private val quizViewModel: QuizViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        val true_button = findViewById<Button>(R.id.true_button)
-//        val false_button = findViewById<Button>(R.id.false_button)
+        Log.d("view model created " , "view model is crated  $quizViewModel")
 
-
-//        val questionTextResId = question_bank[currentIndex].textResId
-//        binding.questionTextView.setText(questionTextResId)
         binding.trueButton.setOnClickListener {
-//            Toast.makeText(this , R.string.correct_toast , Toast.LENGTH_SHORT).show()
             checkAnswer(true)
         }
         binding.falseButton.setOnClickListener {
-//            Toast.makeText(this , R.string.incorrect_toast , Toast.LENGTH_SHORT).show()
             checkAnswer(false)
         }
         binding.nextButton.setOnClickListener {
-         updateQuestion()
+         quizViewModel.moveToNext()
+            updateQuestion()
         }
-        updateQuestion()
+        binding.previousButton.setOnClickListener {
+            PreviousQeustion()
+        }
+        binding.cheatButton.setOnClickListener {
+            val intent = Intent(this  , CheatActivity::class.java)
+            startActivity(intent)
+        }
+        NextQuestion()
+
+    }
+    private fun NextQuestion() {
+
+    }
+    private  fun PreviousQeustion(){
+
 
     }
     private fun updateQuestion() {
-        currentIndex = (currentIndex + 1) % question_bank.size
-        val questionTextResId = question_bank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         binding.questionTextView.setText(questionTextResId)
     }
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = question_bank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
         } else {
